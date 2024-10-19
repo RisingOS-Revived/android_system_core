@@ -1344,3 +1344,110 @@ on property:sys.snapshotctl.map=requested
 on property:sys.snapshotctl.unmap=requested
     exec - root root system -- /system/bin/snapshotctl unmap
     setprop sys.snapshotctl.unmap "finished"
+    
+on post-fs
+    # Virtual Memory
+    write /proc/sys/vm/page-cluster 0
+    write /proc/sys/vm/swappiness 100
+    write /proc/sys/vm/stat_interval 10
+    setprop sys.sysctl.swappiness 100
+
+# Device power modes
+on property:persist.sys.device_power_mode=gameboost
+    write /dev/cpuset/display/cpus 0-7
+    write /dev/cpuset/audio-app/cpus 0-7
+    write /proc/sys/kernel/sched_nr_migrate 128
+    write /proc/sys/vm/vfs_cache_pressure 80
+    write /sys/block/sda/queue/read_ahead_kb 128
+    write /sys/block/sda/queue/nr_requests 512
+    write /proc/sys/vm/dirty_background_ratio 15
+    write /proc/sys/vm/dirty_ratio 30
+    write /proc/sys/vm/dirty_expire_centisecs 3000
+    write /proc/sys/vm/dirty_writeback_centisecs 3000
+on property:persist.sys.device_power_mode=performance
+    write /dev/cpuset/display/cpus 1-7
+    write /dev/cpuset/audio-app/cpus 1-7
+    write /proc/sys/kernel/sched_nr_migrate 4
+    write /proc/sys/vm/vfs_cache_pressure 200
+    write /sys/block/sda/queue/read_ahead_kb 32
+    write /sys/block/sda/queue/nr_requests 32
+    write /proc/sys/vm/dirty_background_ratio 3
+    write /proc/sys/vm/dirty_ratio 30
+    write /proc/sys/vm/dirty_expire_centisecs 3000
+    write /proc/sys/vm/dirty_writeback_centisecs 3000
+on property:persist.sys.device_power_mode=conservative
+    write /dev/cpuset/display/cpus 0-4
+    write /dev/cpuset/audio-app/cpus 1-3
+    write /proc/sys/kernel/sched_nr_migrate 256
+    write /proc/sys/vm/vfs_cache_pressure 100
+    write /sys/block/sda/queue/read_ahead_kb 64
+    write /sys/block/sda/queue/nr_requests 512
+    write /proc/sys/vm/dirty_background_ratio 2
+    write /proc/sys/vm/dirty_ratio 5
+    write /proc/sys/vm/dirty_expire_centisecs 500
+    write /proc/sys/vm/dirty_writeback_centisecs 500
+    write /sys/devices/system/cpu/cpu0/cpufreq/conservative/down_threshold 50
+    write /sys/devices/system/cpu/cpu0/cpufreq/conservative/freq_step 3
+    write /sys/devices/system/cpu/cpu0/cpufreq/conservative/up_threshold 95
+    write /sys/devices/system/cpu/cpu1/cpufreq/conservative/down_threshold 50
+    write /sys/devices/system/cpu/cpu1/cpufreq/conservative/freq_step 3
+    write /sys/devices/system/cpu/cpu1/cpufreq/conservative/up_threshold 95
+    write /sys/devices/system/cpu/cpu2/cpufreq/conservative/down_threshold 50
+    write /sys/devices/system/cpu/cpu2/cpufreq/conservative/freq_step 3
+    write /sys/devices/system/cpu/cpu2/cpufreq/conservative/up_threshold 95
+    write /sys/devices/system/cpu/cpu3/cpufreq/conservative/down_threshold 50
+    write /sys/devices/system/cpu/cpu3/cpufreq/conservative/freq_step 3
+    write /sys/devices/system/cpu/cpu3/cpufreq/conservative/up_threshold 95
+    write /sys/devices/system/cpu/cpu4/cpufreq/conservative/down_threshold 50
+    write /sys/devices/system/cpu/cpu4/cpufreq/conservative/freq_step 3
+    write /sys/devices/system/cpu/cpu4/cpufreq/conservative/up_threshold 95
+    write /sys/devices/system/cpu/cpu5/cpufreq/conservative/down_threshold 50
+    write /sys/devices/system/cpu/cpu5/cpufreq/conservative/freq_step 3
+    write /sys/devices/system/cpu/cpu5/cpufreq/conservative/up_threshold 95
+    write /sys/devices/system/cpu/cpu6/cpufreq/conservative/down_threshold 50
+    write /sys/devices/system/cpu/cpu6/cpufreq/conservative/freq_step 3
+    write /sys/devices/system/cpu/cpu6/cpufreq/conservative/up_threshold 95
+    write /sys/devices/system/cpu/cpu7/cpufreq/conservative/down_threshold 50
+    write /sys/devices/system/cpu/cpu7/cpufreq/conservative/freq_step 3
+    write /sys/devices/system/cpu/cpu7/cpufreq/conservative/up_threshold 95
+on property:persist.sys.device_power_mode=powersave
+    write /dev/cpuset/display/cpus 0-3
+    write /dev/cpuset/audio-app/cpus 1-2
+    write /proc/sys/kernel/sched_nr_migrate 256
+    write /proc/sys/vm/vfs_cache_pressure 100
+    write /sys/block/sda/queue/read_ahead_kb 64
+    write /sys/block/sda/queue/nr_requests 512
+    write /proc/sys/vm/dirty_background_ratio 2
+    write /proc/sys/vm/dirty_ratio 5
+    write /proc/sys/vm/dirty_expire_centisecs 500
+    write /proc/sys/vm/dirty_writeback_centisecs 500
+on property:persist.sys.device_power_mode=default
+    write /dev/cpuset/display/cpus 4-7
+    write /dev/cpuset/audio-app/cpus 0-3
+    write /proc/sys/kernel/sched_nr_migrate 32
+    write /proc/sys/vm/vfs_cache_pressure 100
+    write /sys/block/sda/queue/read_ahead_kb 128
+    write /sys/block/sda/queue/nr_requests 64
+    write /proc/sys/vm/dirty_background_ratio 10
+    write /proc/sys/vm/dirty_ratio 30
+    write /proc/sys/vm/dirty_expire_centisecs 3000
+    write /proc/sys/vm/dirty_writeback_centisecs 3000
+
+on property:persist.sys.ramboost_enabled=false
+    write /proc/sys/vm/compaction_proactiveness 20
+    write /proc/sys/vm/swappiness 60
+    write /proc/sys/vm/swap_ratio_enable 0
+    write /proc/sys/vm/swap_ratio 100
+    write /proc/sys/vm/extfrag_threshold 500
+    write /sys/kernel/mm/lru_gen/enabled 0
+    write /proc/sys/vm/watermark_boost_factor 0
+    write /proc/sys/vm/page_lock_unfairness 5
+on property:persist.sys.ramboost_enabled=true
+    write /proc/sys/vm/compaction_proactiveness 0
+    write /sys/kernel/mm/lru_gen/enabled 5
+    write /proc/sys/vm/swappiness 160
+    write /proc/sys/vm/swap_ratio_enable 1
+    write /proc/sys/vm/swap_ratio 70
+    write /proc/sys/vm/extfrag_threshold 750
+    write /proc/sys/vm/watermark_boost_factor 1
+    write /proc/sys/vm/page_lock_unfairness 1
