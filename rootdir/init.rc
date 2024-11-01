@@ -1354,6 +1354,7 @@ on post-fs
 
 # Device power modes
 on property:persist.sys.device_power_mode=gameboost
+    write /dev/cpuset/display/cpus 0-7
     write /proc/sys/kernel/sched_nr_migrate 128
     write /proc/sys/vm/vfs_cache_pressure 80
     write /sys/block/sda/queue/read_ahead_kb 128
@@ -1363,6 +1364,7 @@ on property:persist.sys.device_power_mode=gameboost
     write /proc/sys/vm/dirty_expire_centisecs 3000
     write /proc/sys/vm/dirty_writeback_centisecs 3000
 on property:persist.sys.device_power_mode=performance
+    write /dev/cpuset/display/cpus 1-7
     write /proc/sys/kernel/sched_nr_migrate 4
     write /proc/sys/vm/vfs_cache_pressure 200
     write /sys/block/sda/queue/read_ahead_kb 32
@@ -1372,6 +1374,7 @@ on property:persist.sys.device_power_mode=performance
     write /proc/sys/vm/dirty_expire_centisecs 3000
     write /proc/sys/vm/dirty_writeback_centisecs 3000
 on property:persist.sys.device_power_mode=conservative
+    write /dev/cpuset/display/cpus 0-4
     write /proc/sys/kernel/sched_nr_migrate 256
     write /proc/sys/vm/vfs_cache_pressure 100
     write /sys/block/sda/queue/read_ahead_kb 64
@@ -1381,6 +1384,7 @@ on property:persist.sys.device_power_mode=conservative
     write /proc/sys/vm/dirty_expire_centisecs 500
     write /proc/sys/vm/dirty_writeback_centisecs 500
 on property:persist.sys.device_power_mode=powersave
+    write /dev/cpuset/display/cpus 0-3
     write /proc/sys/kernel/sched_nr_migrate 256
     write /proc/sys/vm/vfs_cache_pressure 100
     write /sys/block/sda/queue/read_ahead_kb 64
@@ -1390,6 +1394,7 @@ on property:persist.sys.device_power_mode=powersave
     write /proc/sys/vm/dirty_expire_centisecs 500
     write /proc/sys/vm/dirty_writeback_centisecs 500
 on property:persist.sys.device_power_mode=default
+    write /dev/cpuset/display/cpus 4-7
     write /proc/sys/kernel/sched_nr_migrate 32
     write /proc/sys/vm/vfs_cache_pressure 100
     write /sys/block/sda/queue/read_ahead_kb 256
