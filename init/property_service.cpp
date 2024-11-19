@@ -864,9 +864,10 @@ static void update_sys_usb_config() {
 static void update_blur_config() {
     bool should_enable_blur = android::base::GetBoolProperty("ro.custom.blur.enable", true);
     if (should_enable_blur) {
+        std::string error;
         // Enable UI blur
-        InitPropertySet("ro.launcher.blur.appLaunch", "1");
-        InitPropertySet("ro.surface_flinger.supports_background_blur", "1");
+        PropertySetNoSocket("ro.launcher.blur.appLaunch", "1", &error);
+        PropertySetNoSocket("ro.surface_flinger.supports_background_blur", "1", &error);
     }
 }
 
