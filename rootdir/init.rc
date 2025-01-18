@@ -1386,6 +1386,12 @@ on property:persist.sys.device_power_mode=performance
     write /sys/devices/system/cpu/cpu4/cpufreq/sched_pixel/down_rate_limit_us 0
     write /sys/devices/system/cpu/cpu6/cpufreq/sched_pixel/up_rate_limit_us 0
     write /sys/devices/system/cpu/cpu6/cpufreq/sched_pixel/down_rate_limit_us 0
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/up_rate_limit_us 0
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/down_rate_limit_us 0
+    write /sys/devices/system/cpu/cpu4/cpufreq/schedutil/up_rate_limit_us 0
+    write /sys/devices/system/cpu/cpu4/cpufreq/schedutil/down_rate_limit_us 0
+    write /sys/devices/system/cpu/cpu6/cpufreq/schedutil/up_rate_limit_us 0
+    write /sys/devices/system/cpu/cpu6/cpufreq/schedutil/down_rate_limit_us 0
 
 on property:persist.sys.device_power_mode=conservative
     write /dev/cpuset/display/cpus 0-4
@@ -1403,6 +1409,12 @@ on property:persist.sys.device_power_mode=conservative
     write /sys/devices/system/cpu/cpu4/cpufreq/sched_pixel/down_rate_limit_us 5000
     write /sys/devices/system/cpu/cpu6/cpufreq/sched_pixel/up_rate_limit_us 5000
     write /sys/devices/system/cpu/cpu6/cpufreq/sched_pixel/down_rate_limit_us 5000
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/up_rate_limit_us 5000
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/down_rate_limit_us 5000
+    write /sys/devices/system/cpu/cpu4/cpufreq/schedutil/up_rate_limit_us 5000
+    write /sys/devices/system/cpu/cpu4/cpufreq/schedutil/down_rate_limit_us 5000
+    write /sys/devices/system/cpu/cpu6/cpufreq/schedutil/up_rate_limit_us 5000
+    write /sys/devices/system/cpu/cpu6/cpufreq/schedutil/down_rate_limit_us 5000
 
 on property:persist.sys.device_power_mode=powersave
     write /dev/cpuset/display/cpus 0-3
@@ -1420,6 +1432,12 @@ on property:persist.sys.device_power_mode=powersave
     write /sys/devices/system/cpu/cpu4/cpufreq/sched_pixel/down_rate_limit_us 10000
     write /sys/devices/system/cpu/cpu6/cpufreq/sched_pixel/up_rate_limit_us 10000
     write /sys/devices/system/cpu/cpu6/cpufreq/sched_pixel/down_rate_limit_us 10000
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/up_rate_limit_us 10000
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/down_rate_limit_us 10000
+    write /sys/devices/system/cpu/cpu4/cpufreq/schedutil/up_rate_limit_us 10000
+    write /sys/devices/system/cpu/cpu4/cpufreq/schedutil/down_rate_limit_us 10000
+    write /sys/devices/system/cpu/cpu6/cpufreq/schedutil/up_rate_limit_us 10000
+    write /sys/devices/system/cpu/cpu6/cpufreq/schedutil/down_rate_limit_us 10000
 
 on property:persist.sys.device_power_mode=default
     write /dev/cpuset/display/cpus 4-7
@@ -1437,6 +1455,12 @@ on property:persist.sys.device_power_mode=default
     write /sys/devices/system/cpu/cpu4/cpufreq/sched_pixel/down_rate_limit_us 2000
     write /sys/devices/system/cpu/cpu6/cpufreq/sched_pixel/up_rate_limit_us 2000
     write /sys/devices/system/cpu/cpu6/cpufreq/sched_pixel/down_rate_limit_us 2000
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/up_rate_limit_us 2000
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/down_rate_limit_us 2000
+    write /sys/devices/system/cpu/cpu4/cpufreq/schedutil/up_rate_limit_us 2000
+    write /sys/devices/system/cpu/cpu4/cpufreq/schedutil/down_rate_limit_us 2000
+    write /sys/devices/system/cpu/cpu6/cpufreq/schedutil/up_rate_limit_us 2000
+    write /sys/devices/system/cpu/cpu6/cpufreq/schedutil/down_rate_limit_us 2000
 
 on property:persist.sys.ramboost_enabled=false
     write /proc/sys/vm/compaction_proactiveness 20
