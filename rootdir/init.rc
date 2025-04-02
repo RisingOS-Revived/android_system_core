@@ -1529,3 +1529,9 @@ on property:persist.sys.ramboost_enabled=true
     write /proc/sys/vm/extfrag_threshold 750
     write /proc/sys/vm/watermark_boost_factor 1
     write /proc/sys/vm/page_lock_unfairness 1
+  
+on property:persist.sys.battery_health_limit_charge=true
+  write /sys/devices/platform/google,charger/charge_stop_level 80
+  
+on property:persist.sys.battery_health_limit_charge=false
+  write /sys/devices/platform/google,charger/charge_stop_level 100
