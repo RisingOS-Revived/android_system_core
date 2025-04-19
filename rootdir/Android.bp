@@ -50,6 +50,12 @@ prebuilt_etc {
     recovery_available: true,
 }
 
+prebuilt_etc {
+    name: "performance_booster.rc",
+    src: "etc/performance_booster.rc",
+    sub_dir: "etc",
+}
+
 filegroup {
     name: "system_linker_config_json_file",
     srcs: ["etc/linker.config.json"],
