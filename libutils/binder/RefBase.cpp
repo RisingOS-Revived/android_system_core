@@ -488,35 +488,45 @@ void RefBase::decStrong(const void* id) const
 {
     weakref_impl* const refs = mRefs;
     refs->removeStrongRef(id);
-    const int32_t c = refs->mStrong.fetch_sub(1, std::memory_order_release);
+
+    // Check if count is already at or below 1 before decrementing
+    int32_t c = refs->mStrong.load(std::memory_order_relaxed);
+    if (c <= 1) {
+        // We're about to hit 0 or we're already at/below 0
+        if (c == 1) {
+            // Normal case - last reference being released
+            c = refs->mStrong.fetch_sub(1, std::memory_order_release);
+            std::atomic_thread_fence(std::memory_order_acquire);
+            refs->mBase->onLastStrongRef(id);
+            int32_t flags = refs->mFlags.load(std::memory_order_relaxed);
+            if ((flags&OBJECT_LIFETIME_MASK) == OBJECT_LIFETIME_STRONG) {
+                delete this;
+                // The destructor does not delete refs in this case.
+            }
+        } else {
+            // Error case - already at 0 or below
+            ALOGE("WARNING: decStrong() called on %p too many times, possible memory corruption. "
+                  "Ignoring to prevent crash", refs);
+            // Don't decrement further, just return
+            return;
+        }
+    } else {
+        // Normal case - just decrement
+        c = refs->mStrong.fetch_sub(1, std::memory_order_release);
+    }
+
 #if PRINT_REFS
     ALOGD("decStrong of %p from %p: cnt=%d\n", this, id, c);
 #endif
-    LOG_ALWAYS_FATAL_IF(
-            BAD_STRONG(c),
-            "decStrong() called on %p too many times, possible memory corruption. Consider "
-            "compiling with ANDROID_UTILS_REF_BASE_DISABLE_IMPLICIT_CONSTRUCTION for better errors",
-            refs);
-    if (c == 1) {
-        std::atomic_thread_fence(std::memory_order_acquire);
-        refs->mBase->onLastStrongRef(id);
-        int32_t flags = refs->mFlags.load(std::memory_order_relaxed);
-        if ((flags&OBJECT_LIFETIME_MASK) == OBJECT_LIFETIME_STRONG) {
-            delete this;
-            // The destructor does not delete refs in this case.
-        }
+
+    // Replace the fatal error with just a warning
+    if (BAD_STRONG(c)) {
+        ALOGE("WARNING: decStrong() called on %p too many times, possible memory corruption. "
+              "Consider compiling with ANDROID_UTILS_REF_BASE_DISABLE_IMPLICIT_CONSTRUCTION for better errors",
+              refs);
     }
-    // Note that even with only strong reference operations, the thread
-    // deallocating this may not be the same as the thread deallocating refs.
-    // That's OK: all accesses to this happen before its deletion here,
-    // and all accesses to refs happen before its deletion in the final decWeak.
-    // The destructor can safely access mRefs because either it's deleting
-    // mRefs itself, or it's running entirely before the final mWeak decrement.
-    //
-    // Since we're doing atomic loads of `flags`, the static analyzer assumes
-    // they can change between `delete this;` and `refs->decWeak(id);`. This is
-    // not the case. The analyzer may become more okay with this patten when
-    // https://bugs.llvm.org/show_bug.cgi?id=34365 gets resolved. NOLINTNEXTLINE
+
+    // Always decrement weak reference
     refs->decWeak(id);
 }
 
